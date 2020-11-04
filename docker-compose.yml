@@ -1,0 +1,26 @@
+version: '3'
+services:
+  myapp-mysql:
+    restart: always
+    container_name: myapp-mysql
+    image: mysql
+    environment:
+      MYSQL_DATABASE: accounts
+      MYSQL_ROOT_PASSWORD: Root1234
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+  newaccount:
+    image: arojasbx/newaccount:latest
+    restart: on-failure
+    depends_on:
+     - myapp-mysql
+    ports:
+     - 8080:8080
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
